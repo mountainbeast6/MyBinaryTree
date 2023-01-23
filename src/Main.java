@@ -10,11 +10,12 @@ public class Main {
         tree.add(235);
         tree.add(290);
         tree.add(215);
-
+        tree.add(245);
+        tree.add(220);
 
         tree.printInOrder();
         System.out.println(tree.exists(15));
-        tree.sdelete(105);
+        tree.sdelete(100);
         tree.printInOrder();
 
     }

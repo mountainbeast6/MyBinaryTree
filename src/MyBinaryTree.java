@@ -60,52 +60,61 @@ public class MyBinaryTree<T extends Comparable<T>> {
         }
         return -1;
     }
-    public MyBinaryTreeNode<T> finder(MyBinaryTreeNode<T>parent,MyBinaryTreeNode<T> node, boolean firstPass){
+    public MyBinaryTreeNode<T> finder(MyBinaryTreeNode<T> node, boolean firstPass){
         if (firstPass) {
-            if(node.getLeft()==null){
-                if(node.getRight()==null){
-                    node=null;
-                    return null;
-                }else{
-                    node=node.getRight();
-                    return node;
-                }
+            if(node.getLeft()==null||node.getRight()==null){
+                return node;
             }else {
-                return finder(node, node.getLeft(), false);
+                return finder(node.getLeft(), false);
             }
         }
         else {
-            if (node.getRight() == null) {
-                if (node.getLeft() != null) {
-                    MyBinaryTreeNode<T> temp = node.getLeft();
-                    parent.setRight(temp);
-                    return temp;
-                } else {
-                    parent.setRight(null);
-                }
-            } else {
-                return finder(node, node.getRight(), false);
+            if(node.getRight().getRight()==null){
+                return node;
+            }
+            else {
+                return finder(node.getRight(), false);
             }
         }
-        return null;
     }
+
     public void sdelete(T tar){
 
         int count = searcher(tar, root);
         MyBinaryTreeNode<T> curr = root;
-        MyBinaryTreeNode<T> prev =curr;
+        MyBinaryTreeNode<T> prev = root;
         for (int i = 0; i < count; i++) {
             prev=curr;
             curr= (tar.compareTo(curr.getData()) < 0 ? curr.getLeft() : curr.getRight());
         }
-        if(prev==curr){
-            root=finder(prev, curr, true);
-        }
-        else if (prev.getData().compareTo(curr.getData())>0)
-            prev.setLeft((finder(prev, curr, true)));
-        else
-            prev.setRight((finder(prev, curr, true)));
+            MyBinaryTreeNode<T> temp =finder(curr, true);
+            if(temp.getRight()!=(null)){
+                curr.setData(temp.getRight().getData());
+                cleanUp(searcher(temp.getData(),root),temp.getData());
+            }
+            else if(temp.getLeft()!=null){
+                curr.setData(temp.getLeft().getData());
+                cleanUp(searcher(temp.getData(),root),temp.getData());
+            }
+            else{
+                if(prev.getData().compareTo(curr.getData())<0){
+                    prev.setRight(null);
+                }
+                else {
+                    prev.setLeft(null);
+                }
+            }
 
+
+
+
+    }
+    public void cleanUp(int depth, T tar){
+        MyBinaryTreeNode<T> curr = root;
+        for (int i = 0; i < depth-1; i++) {
+            curr= (tar.compareTo(curr.getData()) < 0 ? curr.getLeft() : curr.getRight());
+        }
+        curr.setRight(curr.getRight().getLeft());
     }
     public void delete(T tar) {
         int count = searcher(tar, root);
