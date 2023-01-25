@@ -1,22 +1,41 @@
+import java.util.ArrayList;
+
 public class Main {
     public static void main(String[] args) {
-        MyBinaryTree<Integer>tree= new MyBinaryTree<>();
-        tree.add(100);
-        tree.add(23);
-        tree.add(230);
-        tree.add(105);
-        tree.add(15);
-        tree.add(26);
-        tree.add(235);
-        tree.add(290);
-        tree.add(215);
-        tree.add(245);
-        tree.add(220);
-
+        MyBinaryTree tree= treeFiller();
+//        checkAll(tree.AinOrder());
+        tree.delete(100);
         tree.printInOrder();
-        System.out.println(tree.exists(15));
-        tree.sdelete(100);
-        tree.printInOrder();
-
+    }
+    public static void checkAll(ArrayList<Integer> nums){
+        MyBinaryTree<Integer>redo;
+        for(int i =0; i<nums.size();i++){
+            redo=treeFiller();
+            redo.sdelete(nums.get(i));
+            System.out.println(redo.exists(nums.get(i)));
+            System.out.println(nums.get(i));
+        }
+        redo=treeFiller();
+        for(int i =0; i<nums.size();i++) {
+            redo.sdelete(nums.get(i));
+            System.out.println(redo.exists(nums.get(i)));
+            System.out.println(nums.get(i));
+        }
+        redo.printInOrder();
+    }
+    public static MyBinaryTree treeFiller(){
+        MyBinaryTree<Integer> toBeFilled = new MyBinaryTree<>();
+        toBeFilled.add(100);
+        toBeFilled.add(23);
+        toBeFilled.add(230);
+        toBeFilled.add(105);
+        toBeFilled.add(15);
+        toBeFilled.add(26);
+        toBeFilled.add(235);
+        toBeFilled.add(290);
+        toBeFilled.add(215);
+        toBeFilled.add(245);
+        toBeFilled.add(220);
+        return toBeFilled;
     }
 }

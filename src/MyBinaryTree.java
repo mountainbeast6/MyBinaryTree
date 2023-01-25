@@ -1,4 +1,5 @@
 import java.security.PublicKey;
+import java.util.ArrayList;
 
 public class MyBinaryTree<T extends Comparable<T>> {
     private MyBinaryTreeNode<T> root;
@@ -41,6 +42,18 @@ public class MyBinaryTree<T extends Comparable<T>> {
         System.out.println(node);
         printInOrderRecur(node.getRight());
     }
+    public ArrayList<T> AinOrder(){
+        ArrayList<T> bitch =new ArrayList<T>();
+        return (AinOrderRecur(root, bitch));
+    }
+    private ArrayList<T>AinOrderRecur(MyBinaryTreeNode<T> node, ArrayList<T> lister){
+        if (node == null)
+            return lister;
+        AinOrderRecur(node.getLeft(),lister);
+        lister.add(node.getData());
+        AinOrderRecur(node.getRight(),lister);
+        return lister;
+    }
 
     public boolean exists(T data) {
         return (searcher(data, root) >= 0);
@@ -62,19 +75,20 @@ public class MyBinaryTree<T extends Comparable<T>> {
     }
     public MyBinaryTreeNode<T> finder(MyBinaryTreeNode<T> node, boolean firstPass){
         if (firstPass) {
-            if(node.getLeft()==null||node.getRight()==null){
+            if (node.getLeft() == null || node.getRight() == null) {
                 return node;
-            }else {
+            } else if(node.getLeft().getRight()==null){
+                return node;
+            }else{
                 return finder(node.getLeft(), false);
             }
         }
         else {
-            if(node.getRight().getRight()==null){
-                return node;
-            }
-            else {
-                return finder(node.getRight(), false);
-            }
+                if (node.getRight().getRight() == null) {
+                    return node;
+                } else {
+                    return finder(node.getRight(), false);
+                }
         }
     }
 
@@ -111,10 +125,21 @@ public class MyBinaryTree<T extends Comparable<T>> {
     }
     public void cleanUp(int depth, T tar){
         MyBinaryTreeNode<T> curr = root;
-        for (int i = 0; i < depth-1; i++) {
+        MyBinaryTreeNode<T> doubcheck = root;
+        for (int i = 0; i < depth; i++) {
+            doubcheck=curr;
             curr= (tar.compareTo(curr.getData()) < 0 ? curr.getLeft() : curr.getRight());
         }
-        curr.setRight(curr.getRight().getLeft());
+        if(curr.getRight()!=null) {
+            if (doubcheck.getData().compareTo(curr.getData()) < 0) {
+                curr.setLeft(curr.getRight().getLeft());
+                curr.setRight(curr.getRight().getRight());
+            } else {
+                curr.setRight(curr.getRight().getLeft());
+            }
+        } else {
+
+        }
     }
     public void delete(T tar) {
         int count = searcher(tar, root);
