@@ -13,8 +13,19 @@ public class MyBinaryTree<T extends Comparable<T>> {
             root = new MyBinaryTreeNode<>(data);
         else
             addRecur(root, data);
+        Balance();
     }
-
+    public MyBinaryTree<T> Balance() {
+        ArrayList<T>stuff=AinOrder();
+        MyBinaryTree<T> boi = new MyBinaryTree<>();
+        if(stuff.size()!=0) {
+            root = new MyBinaryTreeNode<>(stuff.remove(stuff.size() / 2));
+            while (stuff.size() > 0) {
+                this.addRecur(root,stuff.remove(stuff.size() / 2));
+            }
+        }
+        return this;
+    }
     private void addRecur(MyBinaryTreeNode<T> root, T data) {
         if (data.compareTo(root.getData()) < 0) {
             if (root.getLeft() == null) {
@@ -93,7 +104,6 @@ public class MyBinaryTree<T extends Comparable<T>> {
     }
 
     public void sdelete(T tar){
-
         int count = searcher(tar, root);
         MyBinaryTreeNode<T> curr = root;
         MyBinaryTreeNode<T> prev = root;
@@ -101,27 +111,25 @@ public class MyBinaryTree<T extends Comparable<T>> {
             prev=curr;
             curr= (tar.compareTo(curr.getData()) < 0 ? curr.getLeft() : curr.getRight());
         }
-            MyBinaryTreeNode<T> temp =finder(curr, true);
-            if(temp.getRight()!=(null)){
+        if(count!=0||root.getRight()!=null||root.getLeft()!=null) {
+            MyBinaryTreeNode<T> temp = finder(curr, true);
+            if (temp.getRight() != (null)) {
                 curr.setData(temp.getRight().getData());
-                cleanUp(searcher(temp.getData(),root),temp.getData());
-            }
-            else if(temp.getLeft()!=null){
+                cleanUp(searcher(temp.getData(), root), temp.getData());
+            } else if (temp.getLeft() != null) {
                 curr.setData(temp.getLeft().getData());
-                cleanUp(searcher(temp.getData(),root),temp.getData());
-            }
-            else{
-                if(prev.getData().compareTo(curr.getData())<0){
+                cleanUp(searcher(temp.getData(), root), temp.getData());
+            } else {
+                if (prev.getData().compareTo(curr.getData()) < 0) {
                     prev.setRight(null);
-                }
-                else {
+                } else {
                     prev.setLeft(null);
                 }
             }
-
-
-
-
+        } else {
+            root=null;
+        }
+        Balance();
     }
     public void cleanUp(int depth, T tar){
         MyBinaryTreeNode<T> curr = root;

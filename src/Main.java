@@ -3,8 +3,10 @@ import java.util.ArrayList;
 public class Main {
     public static void main(String[] args) {
         MyBinaryTree tree= treeFiller();
-//        checkAll(tree.AinOrder());
-        tree.delete(100);
+        tree.Balance();
+//        tree.printInOrder();
+          checkAll(tree.AinOrder());
+//        tree.sdelete(100);
         tree.printInOrder();
     }
     public static void checkAll(ArrayList<Integer> nums){
@@ -36,6 +38,11 @@ public class Main {
         toBeFilled.add(215);
         toBeFilled.add(245);
         toBeFilled.add(220);
+        toBeFilled.add(420);
+        toBeFilled.add(225);
+        toBeFilled.add(205);
+        toBeFilled.add(425);
+        toBeFilled.add(428);
         return toBeFilled;
     }
 }
